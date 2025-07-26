@@ -1,82 +1,109 @@
-# computer-vision-first-assignment-
-Comparing Simple Smoothing Filters with Advanced Filters on Noisy Images
-1. Objective
-The aim of this assignment is to compare the performance of simple smoothing filters (Box filter,
-Gaussian filter, and Median filter) with advanced filters (e.g., adaptive filters) when applied to
-noisy images. You will evaluate them based on noise removal effectiveness, edge preservation,
-computational efficiency, and kernel size effects. Metrics such as Mean Squared Error (MSE) and
-Peak Signal-to-Noise Ratio (PSNR) will be used for quantitative comparison. Additionally, the
-assignment will explore the influence of kernel size on the performance of each filter.
-2. Background
-Image denoising is a fundamental task in computer vision, and various filters are used for this
-purpose:
-• Box filter: Averages pixel values uniformly over a local neighborhood, often causing edge
-blurring.
-• Gaussian filter: Applies a weighted average based on distance from the center, which
-better preserves edges than the Box filter.
-• Median filter: Replaces each pixel with the median of its neighborhood, highly effective
-for salt-and-pepper noise while preserving edges.
-• Adaptive filters: Dynamically adjust filtering parameters based on local image statistics,
-offering superior noise removal with better edge preservation, but usually at a higher
-computational cost.
-The size of the kernel (window) used in filtering plays a significant role in performance. Larger
-kernels provide more smoothing but may blur details and edges. Smaller kernels preserve more
-detail but might be less effective in reducing noise. This assignment will explore how varying
-kernel sizes impact filter performance.
-3. Experiments
-1. Step 1: Generate or load noisy images
-o Select a set of clean images from a public dataset or your own collection.
-o Add different types of noise (e.g., Gaussian noise, Salt-and-Pepper noise) with
-varying intensity levels (low, medium, high).
-2. Step 2: Apply filters
-o Apply the following filters to each noisy image with different kernel sizes:
-▪ Simple filters: Box filter, Gaussian filter, and Median filter.
-▪ Advanced filters: Adaptive mean filter, adaptive median filter, and Bilateral
-filter.
-o Implement the filters using Python and OpenCV or a similar library.
-3. Step 3: Measure performance
-o MSE and PSNR: Calculate the Mean Squared Error (MSE) and Peak Signal-to-Noise
-Ratio (PSNR) for each filter at various kernel sizes.
-o Edge preservation: Use edge detection (e.g., Canny edge detector) to evaluate
-how well the filters preserve edges at different kernel sizes.
-o Computational time: Measure and report the time taken by each filter to process
-the images at different kernel sizes.
-o Kernel size effect: Analyze how varying kernel sizes (small, medium, large) impact
-the performance of each filter in terms of noise reduction, edge preservation, and
-processing speed.
-4. Results
-In your results section, include the following:
-• MSE and PSNR comparison: Present the MSE and PSNR values for each filter across
-different noise levels and kernel sizes.
-• Edge preservation comparison: Provide visual examples of edge maps for different filters,
-kernel sizes, and noise levels. Show how edge details are affected by increasing the kernel
-size.
-• Computational time comparison: Create a table or chart that shows how the
-computational time varies with different kernel sizes for each filter.
-• Effect of kernel size: Summarize how increasing or decreasing the kernel size impacts the
-balance between noise removal and edge preservation for each filter.
-5. Discussion
-In your discussion, focus on:
-• Noise removal: Compare the effectiveness of the simple filters (Box, Gaussian, Median)
-and advanced filters in terms of MSE and PSNR across different kernel sizes.
-• Edge preservation: Discuss how the filters perform in terms of preserving image edges
-and fine details, and how kernel size influences this.
-• Computational efficiency: Analyze how the computational time scales with the kernel
-size for each filter and discuss the trade-offs between processing speed and filter
-performance.
-• Kernel size sensitivity: Evaluate how sensitive each filter is to changes in kernel size, and
-the implications for selecting an appropriate kernel size in practical applications.
-• Exploring trade-offs: Discuss the trade-offs between noise reduction, edge preservation,
-and computational cost for each filter type, particularly in relation to kernel size.
-6. Deliverables
-Your final submission should include:
-1. Code
-2. Report
-• Introduction (overview of the task and filters being compared)
-• Experiments (detailed steps including noise generation, filter application, and
-evaluation methods)
-• Results (MSE, PSNR, edge preservation, computational time, and kernel size effect
-comparisons)
-• Discussion (analysis of the results and key insights into the performance of different
-filters and kernel sizes)
-• Conclusion (summary of findings and recommendations)
+# Computer-Vision Assignment — 2025
+
+End-to-end computer-vision workflow that covers data loading, image preprocessing, model training, and performance evaluation.  
+The polished write-up lives in **docs/assignment-report.pdf**, while fully-execut­able code and experiments are inside **notebooks/** and **src/**.
+
+---
+
+## Repository layout
+.
+├── data/ # Raw / interim / processed image data
+
+│ ├── raw/
+
+│ ├── interim/
+
+│ └── processed/
+
+├── docs/
+
+│ └── assignment-report.pdf # Comprehensive PDF report
+
+├── notebooks/
+
+│ └── cv_assignment.ipynb # Jupyter notebook with code & visuals
+
+├── src/ # Re-usable modules
+
+│ ├── init.py
+
+│ ├── datamodule.py # PyTorch-Lightning DataModule
+
+│ ├── model.py # CNN / ViT architecture
+
+│ └── train.py # CLI entry-point (lightning CLI)
+
+├── tests/ # Minimal unit tests (pytest)
+
+├── requirements.txt # Exact package versions
+
+└── README.md # You are here
+
+
+
+
+
+
+
+---
+
+## Quick start
+
+1. **Clone**
+2. 
+   ```bash
+   git clone https://github.com/<your-username>/computer-vision-assignment-2025.git
+   cd computer-vision-assignment-2025
+    ```  
+2.Prepare environment
+
+  ``` bash
+  python -m venv .venv
+  source .venv/bin/activate           # Windows: .venv\Scripts\activate
+  pip install -r requirements.txt
+  ```
+3.Download / organise data
+
+Place raw images in data/raw/ following the folder structure described in the report (e.g. class_name/imagename.jpg).
+
+
+4.Run the notebook
+
+jupyter notebook notebooks/cv_assignment.ipynb or execute the full training pipeline from the command line:
+  ``` bash
+  python src/train.py --config configs/resnet18.yaml
+  ```
+5.Read the report
+
+Open docs/assignment-report.pdf for methodology, results, and discussion.
+
+
+### Features
+1- Clear project structure suitable for iterative experimentation.
+
+2- Reproducible environment — strict requirements.txt plus optional conda lockfile.
+
+3- Modular code — reusable DataModule and model definitions.
+
+4- Notebook + script parity — explore interactively or run headless.
+
+5- Report-ready visuals — confusion matrices, ROC/PR curves, Grad-CAM heat-maps.
+
+### How it works (high-level)
+1-Data ingestion
+
+Images are loaded with torchvision.datasets.ImageFolder, split train/val/test, and augmented (random crop, flip, colour jitter).
+
+2- Modelling
+
+Baselines: ResNet-18 and MobileNet-V3.
+Training orchestrated by PyTorch-Lightning with early stopping and mixed-precision.
+
+2- Evaluation
+
+Accuracy, precision/recall, F1, per-class confusion matrices.
+Grad-CAM used to interpret model focus areas.
+
+4- Reporting
+
+Key findings exported as figures and embedded in the PDF.
